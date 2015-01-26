@@ -71,9 +71,28 @@ Backbone.LocalStorage = window.Store = function(name, serializer) {
   };
   var store = this.localStorage().getItem(this.name);
   this.records = (store && store.split(",")) || [];
+  this.init();
+
+
+
 };
 
 extend(Backbone.LocalStorage.prototype, {
+
+  init  : function()
+  {
+    if (window.addEventListener) {
+      window.addEventListener("storage", this.handle_storage, false);
+    } else {
+      window.attachEvent("onstorage", this.handle_storage);
+    }
+
+  },
+
+  handle_storage  : function()
+  {
+    this.records = (store && store.split(",")) || [];
+  },
 
   // Save the current state of the **Store** to *localStorage*.
   save: function() {
