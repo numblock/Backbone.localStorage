@@ -82,16 +82,17 @@ extend(Backbone.LocalStorage.prototype, {
   init  : function()
   {
     if (window.addEventListener) {
-      window.addEventListener("storage", this.handle_storage, false);
+      window.addEventListener("storage", this.handle_storage.bind(this), false);
     } else {
-      window.attachEvent("onstorage", this.handle_storage);
+      window.attachEvent("onstorage", this.handle_storage.bind(this));
     }
-
   },
 
   handle_storage  : function()
   {
+    var store = this.localStorage().getItem(this.name);
     this.records = (store && store.split(",")) || [];
+    Backbone.trigger('localStorage:change');
   },
 
   // Save the current state of the **Store** to *localStorage*.

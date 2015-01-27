@@ -102,6 +102,7 @@ $(function(){
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
+
     },
 
     // Re-render the titles of the todo item.
@@ -170,6 +171,12 @@ $(function(){
     // collection, when items are added or changed. Kick things off by
     // loading any preexisting todos that might be saved in *localStorage*.
     initialize: function() {
+
+
+      Backbone.on('localStorage:change', function()
+      {
+        Todos.fetch();
+      });
 
       this.input = this.$("#new-todo");
       this.allCheckbox = this.$("#toggle-all")[0];
